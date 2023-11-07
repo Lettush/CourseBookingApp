@@ -7,9 +7,6 @@ const app = express();
 
 // Middleware
 app.use(express.json());
-
-// Routes
-app.use("/api/courses", require("./src/routes/course"));
 app.use((req, res, next) => {
     console.log(req.path, req.method);
     if (req.body) {
@@ -18,6 +15,10 @@ app.use((req, res, next) => {
     }
     next();
 });
+
+// Routes
+app.use("/api/courses", require("./src/routes/course"));
+app.use("/api/users", require("./src/routes/user"));
 
 mongoose
     .connect(process.env.MONGO_URI)

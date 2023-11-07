@@ -39,9 +39,54 @@ const getCourse = async (req, res) => {
 
     try {
         const course = await Course.findById({ _id: id });
-        if (!course) return res.status(404).json({ error: error.message });
+        if (!course) return res.status(404).json({ error: "No course found" });
 
         res.status(200).json(course);
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+// Update Course
+const updateCourse = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const course = await Course.findByIdAndUpdate(
+            { _id: id },
+            { ...req.body },
+            { new: true, runValidators: true }
+        );
+
+        if (!course) {
+            return res.status(404).json({
+                error: "No matching course found",
+            });
+        }
+
+        res.status(200).json({
+            message: "The course has been successfully updated.",
+            course,
+        });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
+// Delete a course
+const deleteCourse = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const course = await Course.findByIdAndDelete({ _id: id });
+
+        if (!course) {
+            return res.status(404).json({
+                error: "No matching course found",
+            });
+        }
+
+        res.status(200).json({
+            message: "The course has been successfully removed.",
+        });
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -51,4 +96,6 @@ module.exports = {
     createCourse,
     getAllCourses,
     getCourse,
+    updateCourse,
+    deleteCourse,
 };

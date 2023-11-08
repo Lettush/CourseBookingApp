@@ -23,8 +23,8 @@ app.use("/api/users", require("./src/routes/user"));
 mongoose
     .connect(process.env.MONGO_URI)
     .then(() => {
-        app.listen("3000", () => {
-            console.log(`Listening on port 3000 and connected to MongoDB`);
+        app.listen("4000", () => {
+            console.log(`Listening on port 4000 and connected to MongoDB`);
         });
     })
     .catch((error) => {
